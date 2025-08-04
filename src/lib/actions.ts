@@ -23,7 +23,10 @@ const UrlSchema = z.object({
   url: z.string().url({ message: 'Please enter a valid URL.' }),
 });
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 
+  (process.env.NODE_ENV === 'production' 
+    ? 'https://linkify-backend-tawny.vercel.app/api'
+    : 'http://localhost:3002/api');
 
 export async function shortenUrl(url: string): Promise<ShortenUrlState> {
   const validatedFields = UrlSchema.safeParse({ url });

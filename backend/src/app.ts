@@ -22,7 +22,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'http://localhost:9002', 
-    'https://linkify-himanshu07p.vercel.app',
+    'https://linkify-rouge-two.vercel.app',
     ...(process.env['FRONTEND_URL'] ? [process.env['FRONTEND_URL']] : [])
   ],
   credentials: true
