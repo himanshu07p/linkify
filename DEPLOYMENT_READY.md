@@ -32,8 +32,8 @@ git push -u origin main
 4. **Configure:**
    - **Root Directory:** `backend`
    - **Framework:** Other
-   - **Build Command:** `npm run build`
-   - **Output Directory:** `dist`
+   - **Build Command:** `npm run vercel-build`
+   - **Output Directory:** Leave empty
 
 5. **Add Environment Variables:**
    ```
