@@ -40,19 +40,25 @@ function StatsPage() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`${API_BASE_URL}/stats/${shortCode}`);
+        // Since there's no dedicated stats endpoint, we'll fetch all URLs and filter
+        const response = await fetch(`${API_BASE_URL}/urls`);
         
         if (!response.ok) {
-          if (response.status === 404) {
-            setError('Short URL not found');
-          } else {
-            setError('Failed to fetch URL statistics');
-          }
+          setError('Failed to fetch URL statistics');
           return;
         }
 
         const data = await response.json();
-        setStats(data.data);
+        
+        // Find the specific URL by short code
+        const urlData = data.data?.urls?.find((url: any) => url.shortCode === shortCode);
+        
+        if (!urlData) {
+          setError('Short URL not found');
+          return;
+        }
+
+        setStats(urlData);
       } catch (err) {
         setError('Failed to fetch URL statistics');
         console.error('Error fetching stats:', err);
