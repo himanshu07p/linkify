@@ -6,7 +6,10 @@ type Props = {
   };
 };
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 
+  (process.env.NODE_ENV === 'production' 
+    ? 'https://linkify-backend-tawny.vercel.app/api'
+    : 'http://localhost:3002/api');
 
 export default async function ShortCodePage({ params }: Props) {
   const { code } = params;
