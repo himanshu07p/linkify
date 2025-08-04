@@ -15,7 +15,7 @@
     "db:seed": "tsx src/scripts/seed.ts",
     "db:reset": "prisma migrate reset",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && tsc"
+    "vercel-build": "prisma generate"
   },
   "dependencies": {
     "express": "^4.18.2",
