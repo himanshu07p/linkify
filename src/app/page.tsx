@@ -1,3 +1,5 @@
+import { UrlShortenerFormSimple } from '@/components/url-shortener-form-simple';
+
 export default function Home() {
   return (
     <div className="w-full max-w-4xl flex flex-col items-center text-center px-4">
@@ -10,7 +12,7 @@ export default function Home() {
         Linkify is a simple and fast URL shortener. Paste your long URL to get a shortened version instantly. Built for performance and reliability.
       </p>
       <div className="w-full max-w-2xl">
-        <p>URL Shortener Form Coming Soon...</p>
+        <UrlShortenerFormSimple />
       </div>
     </div>
   );
