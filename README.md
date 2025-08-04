@@ -137,20 +137,23 @@ linkify-url-shortener/
    - Import repository in Vercel
    - Root directory: `backend`
    - Framework: Other
-   - Add environment variables
+   - **Copy the deployment URL** (e.g., `https://linkify-backend-abc123.vercel.app`)
+   - **Important:** Add all environment variables manually in Vercel dashboard
 
 3. **Deploy Frontend:**
-   - Import same repository
+   - Import same repository (or create new project)
    - Root directory: `.` (root)
    - Framework: Next.js
-   - Add `NEXT_PUBLIC_API_URL`
+   - Add environment variables with your actual backend URL
 
 ### Environment Variables
 
-**Backend (Vercel):**
+**⚠️ Important:** Set these manually in Vercel dashboard (not as secrets)
+
+**Backend (Vercel Dashboard → Settings → Environment Variables):**
 ```env
 NODE_ENV=production
-DATABASE_URL=your_supabase_connection_string
+DATABASE_URL=postgresql://postgres:himanshu07p@db.jvrceinkmviyjknjdyhw.supabase.co:5432/postgres
 FRONTEND_URL=https://your-frontend.vercel.app
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX_REQUESTS=100
@@ -159,7 +162,33 @@ SHORT_CODE_LENGTH=7
 
 **Frontend (Vercel):**
 ```env
-NEXT_PUBLIC_API_URL=https://your-backend.vercel.app/api
+NEXT_PUBLIC_API_URL=https://[your-actual-backend-url].vercel.app/api
+```
+
+**Example with real URLs:**
+```env
+# If your backend deploys to: https://linkify-backend-abc123.vercel.app
+# Then set: NEXT_PUBLIC_API_URL=https://linkify-backend-abc123.vercel.app/api
+```
+
+### Troubleshooting Deployment
+
+**Environment Variable Issues:**
+- Set environment variables directly in Vercel dashboard (not as secrets)
+- Ensure `NEXT_PUBLIC_API_URL` points to your deployed backend URL
+- Get backend URL from Vercel dashboard after backend deployment
+- URL format: `https://[project-name]-[random-id].vercel.app/api`
+
+**Common Fixes:**
+```bash
+# Remove .next cache if build fails
+rm -rf .next
+
+# Reinstall dependencies
+npm install
+
+# Check environment variables
+vercel env ls
 ```
 
 ## 📊 Usage Examples
