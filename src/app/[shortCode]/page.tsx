@@ -28,7 +28,6 @@ export default async function ShortCodePage({ params }: Props) {
     // If we get here, the short code was not found
     notFound();
   } catch (error) {
-    console.error('Error fetching redirect URL:', error);
     notFound();
   }
 }
