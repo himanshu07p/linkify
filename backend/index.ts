@@ -38,6 +38,22 @@ app.get('/health', (_req, res) => {
   });
 });
 
+// Root endpoint
+app.get('/', (_req, res) => {
+  res.json({
+    success: true,
+    message: 'Welcome to Linkify API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      createUrl: 'POST /api/urls',
+      getUrls: 'GET /api/urls',
+      redirect: 'GET /api/redirect/:shortCode',
+      stats: 'GET /api/stats/:shortCode'
+    }
+  });
+});
+
 // API routes
 app.use('/api/urls', urlRoutes);
 app.use('/api/redirect', redirectRoutes);
