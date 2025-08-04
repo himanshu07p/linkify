@@ -3,9 +3,10 @@
 import { shortenUrl, type ShortenUrlState } from '@/lib/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowRight, Copy, BarChart2, Loader2, AlertCircle } from 'lucide-react';
 import { useRef, useState } from 'react';
+import Link from 'next/link';
 
 export function UrlShortenerFormSimple() {
   const [state, setState] = useState<ShortenUrlState>({ success: false, message: '' });
@@ -29,6 +30,25 @@ export function UrlShortenerFormSimple() {
     }
     
     setIsLoading(false);
+  };
+
+  const handleCopy = async () => {
+    if (shortUrl && navigator?.clipboard) {
+      try {
+        await navigator.clipboard.writeText(shortUrl);
+        // Simple feedback without toast
+        const button = document.activeElement as HTMLButtonElement;
+        if (button) {
+          const originalText = button.innerText;
+          button.innerText = 'Copied!';
+          setTimeout(() => {
+            button.innerText = originalText;
+          }, 2000);
+        }
+      } catch (err) {
+        console.log('Failed to copy to clipboard');
+      }
+    }
   };
 
   return (
@@ -82,10 +102,33 @@ export function UrlShortenerFormSimple() {
       </Card>
 
       {shortUrl && (
-        <Card className="bg-secondary border-border/50">
-          <CardContent className="p-6">
-            <p className="text-sm text-muted-foreground mb-2">Your shortened URL:</p>
-            <p className="text-lg font-semibold text-primary break-all">{shortUrl}</p>
+        <Card className="bg-secondary border-border/50 animate-in fade-in-50 slide-in-from-bottom-5 duration-500">
+          <CardHeader>
+            <CardTitle className="text-xl">Your Shortened Link!</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-4 p-3 bg-background rounded-lg border border-border/50">
+              <Link
+                href={shortUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-lg font-semibold text-primary flex-grow truncate hover:underline"
+              >
+                {shortUrl.replace(/^https?:\/\//, '')}
+              </Link>
+              <Button variant="ghost" size="icon" onClick={handleCopy} className="text-muted-foreground hover:text-foreground">
+                <Copy className="h-5 w-5" />
+                <span className="sr-only">Copy URL</span>
+              </Button>
+            </div>
+            <div className="flex justify-end">
+              <Button asChild variant="link" className="text-accent-foreground hover:text-accent-foreground/80">
+                <Link href={`/stats/${shortUrl.split('/').pop()}`}>
+                  <BarChart2 className="mr-2 h-4 w-4" />
+                  View Stats
+                </Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
       )}
