@@ -74,14 +74,19 @@ export async function shortenUrl(url: string): Promise<ShortenUrlState> {
 
 export async function getUrlStats(shortCode: string): Promise<UrlStats | null> {
   try {
-    const response = await fetch(`${API_BASE_URL}/stats/${shortCode}`);
+    // Since there's no dedicated stats endpoint, we'll fetch all URLs and filter
+    const response = await fetch(`${API_BASE_URL}/urls`);
     
     if (!response.ok) {
       return null;
     }
 
     const data = await response.json();
-    return data.data;
+    
+    // Find the specific URL by short code
+    const urlData = data.data?.urls?.find((url: any) => url.shortCode === shortCode);
+    
+    return urlData || null;
   } catch (error) {
     return null;
   }
