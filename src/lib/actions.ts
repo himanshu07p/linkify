@@ -37,6 +37,9 @@ export async function shortenUrl(url: string): Promise<ShortenUrlState> {
   }
 
   try {
+    console.log('API_BASE_URL:', API_BASE_URL);
+    console.log('Making request to:', `${API_BASE_URL}/urls`);
+    
     const response = await fetch(`${API_BASE_URL}/urls`, {
       method: 'POST',
       headers: {
@@ -47,7 +50,9 @@ export async function shortenUrl(url: string): Promise<ShortenUrlState> {
       }),
     });
 
+    console.log('Response status:', response.status);
     const data = await response.json();
+    console.log('Response data:', data);
 
     if (!response.ok) {
       return {
@@ -62,9 +67,10 @@ export async function shortenUrl(url: string): Promise<ShortenUrlState> {
       shortUrl: data.data.shortUrl,
     };
   } catch (error) {
+    console.error('Fetch error:', error);
     return {
       success: false,
-      message: 'An unexpected error occurred. Please try again.',
+      message: `Connection error: ${error instanceof Error ? error.message : 'Please check your internet connection and try again.'}`,
     };
   }
 }
