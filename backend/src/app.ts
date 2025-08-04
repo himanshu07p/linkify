@@ -51,31 +51,40 @@ app.use(notFound);
 // Error handler
 app.use(errorHandler);
 
+// Export the app for Vercel
+export default app;
+
+// Only start server in development/local environment
 const startServer = async () => {
-  try {
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`📊 Health check: http://localhost:${PORT}/health`);
-      console.log(`🔗 API docs: http://localhost:${PORT}/api`);
-    });
-  } catch (error) {
-    console.error('❌ Error starting server:', error);
-    process.exit(1);
+  if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    try {
+      app.listen(PORT, () => {
+        console.log(`🚀 Server running on port ${PORT}`);
+        console.log(`📊 Health check: http://localhost:${PORT}/health`);
+        console.log(`🔗 API docs: http://localhost:${PORT}/api`);
+      });
+    } catch (error) {
+      console.error('❌ Error starting server:', error);
+      process.exit(1);
+    }
   }
 };
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
-  process.exit(1);
+  if (process.env.NODE_ENV !== 'production') {
+    process.exit(1);
+  }
 });
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
   console.error('Unhandled Rejection:', err);
-  process.exit(1);
+  if (process.env.NODE_ENV !== 'production') {
+    process.exit(1);
+  }
 });
 
+// Only start server if not in Vercel
 startServer();
-
-export default app;
